@@ -1,9 +1,9 @@
-import { CircleCheckFilledIcon } from '@elementor/icons';
+import CircleCheckFilledIcon from '@elementor/icons/CircleCheckFilledIcon';
 import ListItemIcon from '@elementor/ui/ListItemIcon';
 
 const ConnectModalCheckIcon = () => {
 	return (
-		<ListItemIcon sx={{ color: 'info.main' }}>
+		<ListItemIcon sx={{ color: 'primary.main' }}>
 			<CircleCheckFilledIcon width={20} />
 		</ListItemIcon>
 	);

@@ -44,8 +44,8 @@ class Module extends Module_Base {
 	/**
 	 * Enqueue Scripts and Styles
 	 */
-	public function enqueue_scripts( $hook ): void {
-		if ( SettingsModule::SETTING_PAGE_SLUG !== $hook ) {
+	public function enqueue_scripts(): void {
+		if ( ! Utils::is_plugin_settings_page() ) {
 			return;
 		}
 
@@ -57,7 +57,7 @@ class Module extends Module_Base {
 			return;
 		}
 
-		Utils\Assets::enqueue_app_assets( 'reviews' );
+		Utils\Assets::enqueue_app_assets( 'reviews', false );
 
 		wp_localize_script(
 			'reviews',
@@ -208,10 +208,43 @@ class Module extends Module_Base {
 		return false;
 	}
 
+	/**
+	 * Add review link to plugin row meta
+	 *
+	 * @param array $links
+	 * @param string $file
+	 * @return array
+	 * 
+	 */
+	public function add_plugin_row_meta( $links, $file ) {
+
+		if ( ! defined( 'EA11Y_BASE' ) || EA11Y_BASE !== $file ) {
+			return $links;
+		}
+
+		$links[] = '<a class="wp-ea11y-review" 
+						href="https://wordpress.org/support/plugin/pojo-accessibility/reviews/#new-post"
+						target="_blank" rel="noopener noreferrer" 
+						title="' . esc_attr__( 'Review our plugin', 'pojo-accessibility' ) 
+					. '">
+							<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+					</a>';
+
+		echo '<style>
+				.wp-ea11y-review{ display: inline-flex;flex-direction: row-reverse;} 
+				.wp-ea11y-review span{ color:#888}
+				.wp-ea11y-review span:hover{color:#ffa400}
+				.wp-ea11y-review span:hover~span{color:#ffa400}
+			</style>';
+
+		return $links;
+	}
+
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_action( 'admin_init', [ $this, 'register_base_data' ] );
 		add_action( 'rest_api_init', [ $this, 'register_settings' ] );
+		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
 
 		$this->register_routes();
 	}

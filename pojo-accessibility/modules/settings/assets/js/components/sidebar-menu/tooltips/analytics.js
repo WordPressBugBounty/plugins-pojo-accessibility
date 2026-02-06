@@ -1,4 +1,4 @@
-import { InfoCircleIcon } from '@elementor/icons';
+import InfoCircleIcon from '@elementor/icons/InfoCircleIcon';
 import Button from '@elementor/ui/Button';
 import Card from '@elementor/ui/Card';
 import CardActions from '@elementor/ui/CardActions';
@@ -56,7 +56,7 @@ const AnalyticsTooltip = () => {
 				<Button
 					size="small"
 					variant="contained"
-					color="info"
+					color="primary"
 					tabIndex="0"
 					onClick={handleEnableTracking}
 				>
@@ -81,6 +81,7 @@ const AnalyticsTooltip = () => {
 				sx={{ ml: 1 }}
 				onMouseEnter={handleOpen}
 				onFocus={handleOpen}
+				fontSize="small"
 			/>
 		</Infotip>
 	);

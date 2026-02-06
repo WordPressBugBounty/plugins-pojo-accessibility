@@ -1,16 +1,12 @@
 import ArrowLeftIcon from '@elementor/icons/ArrowLeftIcon';
 import InfoCircleIcon from '@elementor/icons/InfoCircleIcon';
 import Box from '@elementor/ui/Box';
-import Divider from '@elementor/ui/Divider';
 import IconButton from '@elementor/ui/IconButton';
 import Infotip from '@elementor/ui/Infotip';
 import Typography from '@elementor/ui/Typography';
 import { styled } from '@elementor/ui/styles';
-import {
-	BLOCK_INFO,
-	BLOCK_TITLES,
-	BLOCKS,
-} from '@ea11y-apps/scanner/constants';
+import { BLOCK_TITLES } from '@ea11y-apps/global/constants';
+import { BLOCK_INFO, BLOCKS } from '@ea11y-apps/scanner/constants';
 import { useHeadingStructureContext } from '@ea11y-apps/scanner/context/heading-structure-context';
 import { useScannerWizardContext } from '@ea11y-apps/scanner/context/scanner-wizard-context';
 import { removeExistingFocus } from '@ea11y-apps/scanner/utils/focus-on-element';
@@ -26,18 +22,6 @@ const HeadingStructureSubheader = () => {
 		removeExistingFocus();
 		setOpenedBlock(isManage ? BLOCKS.management : BLOCKS.main);
 	};
-
-	if (isManage) {
-		return (
-			<>
-				<HeadingStructureTitleRow
-					success={validationStats.success}
-					error={validationStats.error}
-					warning={validationStats.warning}
-				/>
-			</>
-		);
-	}
 
 	return (
 		<>
@@ -72,14 +56,12 @@ const HeadingStructureSubheader = () => {
 									</Typography>
 								}
 							>
-								<InfoCircleIcon fontSize="small" />
+								<InfoCircleIcon fontSize="small" color="action" />
 							</Infotip>
 						)}
 					</Box>
 				</StyledBreadcrumbsBox>
 			</Box>
-
-			<Divider sx={{ backgroundColor: '#ddd' }} />
 
 			{!areNoHeadingsDefined() && (
 				<HeadingStructureTitleRow

@@ -4,10 +4,11 @@ import Modal from '@elementor/ui/Modal';
 import Paper from '@elementor/ui/Paper';
 import Typography from '@elementor/ui/Typography';
 import { styled } from '@elementor/ui/styles';
-import CrownFilled from '@ea11y/icons/crown-filled';
 import { StyledContainer } from '@ea11y/pages/pages.styles';
 import { GOLINKS } from '@ea11y-apps/global/constants';
+import CrownFilled from '@ea11y-apps/global/icons/crown-filled';
 import { mixpanelEvents, mixpanelService } from '@ea11y-apps/global/services';
+import { getUpgradeLink } from '@ea11y-apps/global/utils/upgrade-link';
 import { __ } from '@wordpress/i18n';
 import imageUrl from '../../../img/upgrade.png';
 
@@ -58,7 +59,7 @@ const UpgradeModal = () => {
 							</Typography>
 						</Box>
 						<Button
-							href={GOLINKS.ANALYTICS_POPUP}
+							href={getUpgradeLink(GOLINKS.ANALYTICS_POPUP)}
 							target="_blank"
 							size="large"
 							color="promotion"

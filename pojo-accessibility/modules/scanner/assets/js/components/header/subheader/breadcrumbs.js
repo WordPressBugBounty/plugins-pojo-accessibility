@@ -6,20 +6,19 @@ import IconButton from '@elementor/ui/IconButton';
 import Infotip from '@elementor/ui/Infotip';
 import Typography from '@elementor/ui/Typography';
 import { styled } from '@elementor/ui/styles';
-import {
-	BLOCK_INFO,
-	BLOCK_TITLES,
-	BLOCKS,
-} from '@ea11y-apps/scanner/constants';
+import { BLOCK_TITLES } from '@ea11y-apps/global/constants';
+import { BLOCK_INFO, BLOCKS } from '@ea11y-apps/scanner/constants';
 import { useScannerWizardContext } from '@ea11y-apps/scanner/context/scanner-wizard-context';
 import { removeExistingFocus } from '@ea11y-apps/scanner/utils/focus-on-element';
 import { __ } from '@wordpress/i18n';
 
 const Breadcrumbs = () => {
 	const {
+		isManageGlobal,
 		openedBlock,
 		sortedViolations,
 		sortedRemediation,
+		sortedGlobalRemediation,
 		setOpenedBlock,
 		altTextData,
 		manualData,
@@ -31,16 +30,27 @@ const Breadcrumbs = () => {
 		setOpenedBlock(isManage ? BLOCKS.management : BLOCKS.main);
 	};
 
+	const type = isManage ? 'manage' : 'main';
 	const itemsData =
-		openedBlock === BLOCKS.altText ? altTextData : manualData[openedBlock];
+		openedBlock === BLOCKS.altText
+			? altTextData[type]
+			: manualData[openedBlock];
 
 	const resolved =
 		itemsData?.filter((item) => item?.resolved === true).length || 0;
 
-	const items = isManage ? sortedRemediation : sortedViolations;
-	const count = isManage
-		? items[openedBlock].length
-		: items[openedBlock].length - resolved;
+	const remediations = isManageGlobal
+		? sortedGlobalRemediation
+		: sortedRemediation;
+	const items = isManage ? remediations : sortedViolations;
+	const itemsResolved =
+		items[openedBlock]?.filter((item) =>
+			item?.global === '1'
+				? item.active_for_page === '1'
+				: item?.active === '1',
+		).length || 0;
+
+	const count = isManage ? itemsResolved : items[openedBlock].length - resolved;
 
 	return (
 		<Box>
@@ -72,16 +82,15 @@ const Breadcrumbs = () => {
 								</Typography>
 							}
 						>
-							<InfoCircleIcon fontSize="small" />
+							<InfoCircleIcon fontSize="small" color="action" />
 						</Infotip>
 					)}
-					{items[openedBlock].length > 0 && (
+					{count > 0 && (
 						<Chip
 							label={count}
 							color={isManage ? 'info' : 'error'}
 							variant="standard"
 							size="small"
-							sx={{ fontWeight: 500 }}
 						/>
 					)}
 				</Box>
